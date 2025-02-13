@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kagi Assistant</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="bg-red-500">
+    <p>Kagi Assistant</p>
+    <div id="response" class="response"></div>
+    <textarea id="question" placeholder="Type your question here..."></textarea>
+    <button id="askButton">Ask AI</button>
+  </div>
+
+  <script>
+      const vscode = acquireVsCodeApi();
+
+      document.getElementById('askButton').addEventListener('click', () => {
+          const question = document.getElementById('question').value;
+          vscode.postMessage({ command: 'askAI', text: question });
+      });
+
+      window.addEventListener('message', (event) => {
+          const message = event.data;
+          if (message.command === 'aiResponse') {
+              document.getElementById('response').innerText = message.text;
+          }
+      });
+  </script>
+</body>
+</html>
